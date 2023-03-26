@@ -14,6 +14,7 @@ def scrapeWoordenlijst(woord: str):
 
 def getNounForms(noun: dict):
     dict = {}
+    dict['art'] = noun['gram']['art']
     for form in noun['positions']:
         orth = form['forms'][0]['orth'].lower()
         if form['label'] == 'mv':       dict["pl"]   = orth
@@ -33,9 +34,9 @@ def getAdjectiveForms(adj: dict):
     dict = {}    
     for form in adj['positions']:
         orth = form['forms'][0]['orth'].lower()
-        if form['label'] == 'verbogen': dict["verbogen"]    = orth
-        if form['label'] == 'com':      dict["com"]         = orth
-        if form['label'] == 'sup':      dict["sup"]         = orth
+        if form['label'] == 'verbogen': dict["vbg"]   = orth
+        if form['label'] == 'com':      dict["com"]   = orth
+        if form['label'] == 'sup':      dict["sup"]   = orth
     return dict
 
 def getWordType(word: dict):
@@ -55,11 +56,11 @@ def getWordType(word: dict):
     return keydict[word['gram']['pos']]
 
 def getForms(word: dict):
-    if word['gram']['pos'] == "NOU-C": return getNounForms(word)
-    if word['gram']['pos'] == "NOU-P": return getNounForms(word)
-    if word['gram']['pos'] == "VRB": return getVerbForms(word)
-    if word['gram']['pos'] == "AA": return getAdjectiveForms(word)
-    if word['gram']['pos'] == "NUM": return getAdjectiveForms(word)
+    if word['gram']['pos'] == "NOU-C":  return getNounForms(word)
+    if word['gram']['pos'] == "NOU-P":  return getNounForms(word)
+    if word['gram']['pos'] == "VRB":    return getVerbForms(word)
+    if word['gram']['pos'] == "AA":     return getAdjectiveForms(word)
+    if word['gram']['pos'] == "NUM":    return getAdjectiveForms(word)
     return {}
 
 def checkWoordenlijst(word: str):
