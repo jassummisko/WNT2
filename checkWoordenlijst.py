@@ -12,6 +12,9 @@ def scrapeWoordenlijst(woord: str):
     lemmas = [w for w in filter(lambda x:x['lemma']==woord, test["_embedded"]['exact'])]
     return lemmas
 
+def getLemma(woord: dict):
+    return woord['lemma']
+
 def getNounForms(noun: dict):
     dict = {}
     dict['art'] = noun['gram']['art']
@@ -66,4 +69,4 @@ def getForms(word: dict):
 def checkWoordenlijst(word: str):
     words = scrapeWoordenlijst(word)
     if len(words) == 0: return None
-    return [[getWordType(word), getForms(word)] for word in words]
+    return [[getLemma(word), getWordType(word), getForms(word)] for word in words]

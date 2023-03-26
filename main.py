@@ -1,19 +1,24 @@
 import checkLevel, checkWoordenlijst
+from dataclasses import dataclass
+
+@dataclass
+class DictEntry:
+    lemma:  str
+    level:  str
+    pos:    str
+    forms:  dict
 
 def getInfo(word: str):
     level = checkLevel.getLevel(word)
     words = checkWoordenlijst.checkWoordenlijst(word)
-    return word, level, words
-
-def test(woord: str):
-    word, level, words = getInfo(woord)
-    print(word, level, words)
+    buff  = []
+    for entry in words:
+        buff.append(DictEntry(entry[0], level, entry[1], entry[2]))
+    return buff
 
 if __name__ == "__main__":
     testWords = [
-        "woord", 
-        "vracht", 
-        "triestig"
+        "pak", 
     ]
     for word in testWords:
-        test(word)
+        print(getInfo(word))
