@@ -20,13 +20,13 @@ def rawToDict(raw: RawEntry):
 
 def addIfEmpty(dict1: DictEntry, dict2: DictEntry):
     if dict1.lemma == "":
-        dict1.lemma = dict2.lemma
+        dict1.lemma = dict2.lemma + "*"
     if dict1.cefr == "":
-        dict1.cefr = dict2.cefr
+        dict1.cefr = dict2.cefr + "*"
     if dict1.pos == "":
-        dict1.pos = dict2.pos
+        dict1.pos = dict2.pos + "*"
     if dict1.forms == "":
-        dict1.forms = dict2.forms
+        dict1.forms = dict2.forms + "*"
 
 def findBestMatch(dict: DictEntry, dicts: list[DictEntry]):
     bestMatch = None
@@ -53,8 +53,8 @@ def formatPos(dicts: list[DictEntry]):
 
 if __name__ == "__main__":
     tab = []
-    with open('testdata/A_ORIGINAL.csv', 'r') as f:
-        reader = csv.reader(f)
+    with open('testdata/Q_ORIGINAL.tsv', 'r') as f:
+        reader = csv.reader(f, delimiter="\t")
         tab = [row[:-1] for row in reader][1:]
 
     allEntries = [DictEntry(*row) for row in tab]
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         if rawTest != None:
             scrapedEntries = [rawToDict(entry) for entry in rawTest]
             bestMatch = findBestMatch(entry, scrapedEntries)
-            bestMatch.pos = formatPos(scrapedEntries)
+            bestMatch.pos = formatPos(scrapedEntries) + "*"
             addIfEmpty(entry, bestMatch)
             entry.pos = bestMatch.pos
         newEntries.append(
@@ -78,7 +78,7 @@ if __name__ == "__main__":
              entry.example]
         )
 
-    with open('testdata/A_FINAL.tsv', 'w') as f:
+    with open('testdata/Q_FINAL.tsv', 'w') as f:
         writer = csv.writer(f, delimiter="\t")
         writer.writerows(newEntries)
         
