@@ -1,0 +1,2 @@
+- [x] Rewrite so that checks are performed only if the relevant field is empty (ex. don't check CEFR if already present)
+- [ ] Write interface with Google Sheets

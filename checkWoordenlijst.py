@@ -17,7 +17,10 @@ def getLemma(woord: dict):
 
 def getNounForms(noun: dict):
     dict = {}
-    dict['art'] = noun['gram']['art']
+    if 'art' in noun['gram']:
+        dict['art'] = noun['gram']['art']
+    else:
+        dict['art'] = ''
     for form in noun['positions']:
         orth = form['forms'][0]['orth'].lower()
         if form['label'] == 'mv':       dict["pl"]   = orth
