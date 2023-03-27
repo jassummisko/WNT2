@@ -53,34 +53,37 @@ def formatPos(dicts: list[DictEntry]):
 
 if __name__ == "__main__":
     tab = []
-    with open('testdata/Q_ORIGINAL.tsv', 'r') as f:
-        reader = csv.reader(f, delimiter="\t")
-        tab = [row[:-1] for row in reader][1:]
+    alphabet = ["V", "W", "X", "Y", "Z"]
+    for letter in alphabet:
+        with open(f'testdata/{letter}_ORIGINAL.tsv', 'r') as f:
+            reader = csv.reader(f, delimiter="\t")
+            tab = [row[:-1] for row in reader][1:]
 
-    allEntries = [DictEntry(*row) for row in tab]
-    newEntries = [['', 'Lemma', 'Fonetisch', 'Woordsoort', 'Vormen','Erk', 'Synoniem of definitie', 'Voorbeeldzin']]
-    for i, entry in enumerate(allEntries):
-        rawTest = getInfo(entry)
-        if rawTest != None:
-            scrapedEntries = [rawToDict(entry) for entry in rawTest]
-            bestMatch = findBestMatch(entry, scrapedEntries)
-            bestMatch.pos = formatPos(scrapedEntries) + "*"
-            addIfEmpty(entry, bestMatch)
-            entry.pos = bestMatch.pos
-        newEntries.append(
-            [entry.article, 
-             entry.lemma, 
-             entry.ipa, 
-             entry.pos, 
-             entry.forms, 
-             entry.cefr, 
-             entry.definition, 
-             entry.example]
-        )
+        allEntries = [DictEntry(*row) for row in tab]
+        newEntries = [['', 'Lemma', 'Fonetisch', 'Woordsoort', 'Vormen','Erk', 'Synoniem of definitie', 'Voorbeeldzin']]
+        for i, entry in enumerate(allEntries):
+            rawTest = getInfo(entry)
+            if rawTest != None:
+                scrapedEntries = [rawToDict(entry) for entry in rawTest]
+                bestMatch = findBestMatch(entry, scrapedEntries)
+                bestMatch.pos = formatPos(scrapedEntries) + "*"
+                addIfEmpty(entry, bestMatch)
+                entry.pos = bestMatch.pos
+            print(entry)
+            newEntries.append(
+                [entry.article, 
+                entry.lemma, 
+                entry.ipa, 
+                entry.pos, 
+                entry.forms, 
+                entry.cefr, 
+                entry.definition, 
+                entry.example]
+            )
 
-    with open('testdata/Q_FINAL.tsv', 'w') as f:
-        writer = csv.writer(f, delimiter="\t")
-        writer.writerows(newEntries)
+        with open(f'testdata/{letter}_FINAL.tsv', 'w') as f:
+            writer = csv.writer(f, delimiter="\t")
+            writer.writerows(newEntries)
         
 
     #testWords = [

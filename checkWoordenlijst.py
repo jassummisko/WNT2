@@ -58,6 +58,7 @@ def getWordType(word: dict):
         "NUM": "tw",
         "PD": "vnw",
         "ADP": "vz",
+        "RES": "afk"
     }
     return keydict[word['gram']['pos']]
 
