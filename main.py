@@ -84,19 +84,4 @@ def processLetter(letter: str):
         writer.writerows(newEntries)
 
 if __name__ == "__main__":
-    alphabet = ["A"]
-    for letter in alphabet:
-        processLetter(letter)        
-
-    #testWords = [
-        #"pak", 
-    #]
-    #for word in testWords:
-        #w = getInfo(word)
-        #print(w)
-        #for entry in w:
-            #print(
-                #entry.lemma,            
-                #entry.level,
-                #getFormattedForms(entry)
-            #)
+    for letter in ["E"]: processLetter(letter)        
