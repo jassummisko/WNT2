@@ -8,9 +8,12 @@ def checkZoekeenvoudigewoorden(woord: str, niveau: str):
         'search-term': woord,
         'taalniveau': niveau,
     }
-    response = requests.post('https://www.zoekeenvoudigewoorden.nl/index.php', data=data)
-    processed = BeautifulSoup(response.text, features="html.parser").find("p")
-    res = processed['class'][0]
+    res = None
+    try:
+        response = requests.post('https://www.zoekeenvoudigewoorden.nl/index.php', data=data)
+        processed = BeautifulSoup(response.text, features="html.parser").find("p")
+        res = processed['class'][0]
+    except: pass
     if res == "correct": return True
     if res == "wrong": return False
     return None
@@ -18,11 +21,12 @@ def checkZoekeenvoudigewoorden(woord: str, niveau: str):
 def checkIshetb1(woord: str):
     woord = woord.lower()
     response = requests.get('https://www.ishetb1.nl/search', params={"word": woord})
-    processed = BeautifulSoup(response.text, features="html.parser"
+    processed = None
+    try: processed = BeautifulSoup(response.text, features="html.parser"
         ).find("div", {"class": "ishetb1-verdict"}).find("h1").text.strip()
+    except: pass
     if processed == "JA": return True
     if processed == "NEE": return False
-    if processed == "?": return None
 
 def getLevel(word: str):
     if checkZoekeenvoudigewoorden(word, "A2"): return "A2"

@@ -84,10 +84,9 @@ def processLetter(letter: str):
         writer.writerows(newEntries)
 
 if __name__ == "__main__":
-    alphabet = ["V", "W", "X", "Y", "Z"]
+    alphabet = ["A"]
     for letter in alphabet:
-        processLetter(letter)
-        
+        processLetter(letter)        
 
     #testWords = [
         #"pak", 

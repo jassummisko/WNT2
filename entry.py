@@ -1,5 +1,9 @@
 from dataclasses import dataclass
 
+def returnIfExisting(dict: dict, str: str):
+    if str in dict: return dict[str]
+    return "/"
+
 @dataclass
 class RawEntry:
     lemma:  str
@@ -7,22 +11,18 @@ class RawEntry:
     pos:    str
     forms:  dict
 
-def returnIfExisting(dict: dict, str: str):
-    if str in dict: return dict[str]
-    return "/"
-
-def formatForms(dictEntry: RawEntry, forms: list[str], formatting: str) -> str:
+def formatForms(rawEntry: RawEntry, forms: list[str], formatting: str) -> str:
     return formatting.format(
-        *[returnIfExisting(dictEntry.forms, form) for form in forms]
+        *[returnIfExisting(rawEntry.forms, form) for form in forms]
     )
 
-def getFormattedForms(dictEntry: RawEntry) -> str:
-    if dictEntry.pos == "znw": 
-        return formatForms(dictEntry, ["pl", "dim"], "{}; {}")
-    if dictEntry.pos == "ww":  
-        return formatForms(dictEntry, ["1prs", "1pst", "part"], "{}, {}, {}")
-    if dictEntry.pos == "bnw": 
-        return formatForms(dictEntry, ["vbg", "com", "sup"], "{}; {}, {}")
+def getFormattedForms(rawEntry: RawEntry) -> str:
+    if rawEntry.pos == "znw": 
+        return formatForms(rawEntry, ["pl", "dim"], "{}; {}")
+    if rawEntry.pos == "ww":  
+        return formatForms(rawEntry, ["1prs", "1pst", "part"], "{}, {}, {}")
+    if rawEntry.pos == "bnw": 
+        return formatForms(rawEntry, ["vbg", "com", "sup"], "{}; {}, {}")
     return ""
 
 @dataclass
