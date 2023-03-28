@@ -1,6 +1,8 @@
 import checkLevel, checkWoordenlijst, csv
 import dataclasses
 from entry import RawEntry, DictEntry, getFormattedForms
+from wiktionaryparser import WiktionaryParser
+from checkIpa import getIpa
 
 def getInfo(entry: DictEntry) -> list[RawEntry]:
     if DictEntry.cefr != '': level = DictEntry.cefr
@@ -59,7 +61,7 @@ def processLetter(letter: str):
 
     allEntries = [DictEntry(*row) for row in tab]
     newEntries = [['', 'Lemma', 'Fonetisch', 'Woordsoort', 'Vormen','Erk', 'Synoniem of definitie', 'Voorbeeldzin']]
-    for i, entry in enumerate(allEntries):
+    for entry in allEntries:
         rawTest = getInfo(entry)
         if rawTest != None:
             scrapedEntries = [rawToDict(entry) for entry in rawTest]
@@ -83,5 +85,25 @@ def processLetter(letter: str):
         writer = csv.writer(f, delimiter="\t")
         writer.writerows(newEntries)
 
+def processIpa(filename: str):
+    tab = []
+    with open(f'testdata/{filename}', 'r') as f:
+        reader = csv.reader(f, delimiter="\t")
+        tab = [row[:-1] for row in reader][1:]
+    
+    allEntries = [DictEntry(*row) for row in tab]
+    IPAs = []
+    parser = WiktionaryParser()
+    parser.set_default_language('dutch')
+    for entry in allEntries:
+        rawTest = getIpa(parser, entry.lemma)
+        transcription = rawTest+"*"
+        print(entry.lemma, transcription)
+        IPAs.append(transcription+"\n")
+
+    with open(f'testdata/{filename}_JUSTIPA.txt', 'w') as f:
+        f.writelines(IPAs)
+
 if __name__ == "__main__":
-    for letter in ["E"]: processLetter(letter)        
+    #for letter in ["E"]: processLetter(letter)        
+    processIpa("A_PREIPA.tsv")
